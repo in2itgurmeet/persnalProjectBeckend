@@ -14,10 +14,8 @@ dotenv.config();
 // 3️⃣ Import DB connection
 const connectDB = require("./config/db");
 
-// 4️⃣ Connect to MongoDB
 connectDB();
 
-// 5️⃣ Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
