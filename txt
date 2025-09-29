@@ -104,3 +104,15 @@ RAZORPAY_SECRET=your_razorpay_secret
 CLOUD_NAME=your_cloudinary_name
 CLOUD_KEY=your_cloudinary_key
 CLOUD_SECRET=your_cloudinary_secret
+use yourDatabaseName; // switch to your DB
+
+db.users.insertOne({
+  username: "admin",
+  password: "HashedPasswordHere", // ⚠️ always hash the password
+  name: "Admin User",
+  email: "admin@example.com",
+  phoneNumber: "9876543210",
+  roleName: "ADMIN",
+  profileImg: "",
+  married: "no"
+});
