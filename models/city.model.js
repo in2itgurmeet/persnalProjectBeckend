@@ -8,7 +8,7 @@ const citySchema = new mongoose.Schema({
     },
     popularCity: {
         type: Boolean,
-        default: false   // false = normal city, true = popular city
+        default: false   
     }
 }, {
     timestamps: true

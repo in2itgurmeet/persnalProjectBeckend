@@ -40,7 +40,6 @@ const updateSchema = Joi.object({
     .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$^&*%])[A-Za-z\d@$^&*%]{8,20}$/),
   
   roleName: Joi.string().valid('USER', 'ADMIN'),
-  
   profileImg: Joi.string().uri(),
   dob: Joi.date(),
   identity: Joi.string(),
