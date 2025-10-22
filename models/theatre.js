@@ -51,6 +51,5 @@ const theatreSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-const Theatre = mongoose.model("Theatre", theatreSchema);
-
+const Theatre = mongoose.model("Theatre", theatreSchema); 
 module.exports = Theatre;
