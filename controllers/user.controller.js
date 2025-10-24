@@ -17,7 +17,7 @@ exports.registerUser = async (req, res) => {
       ...req.body,
       email: req.body.email.toLowerCase(),
       password: hashedPassword,
-      role: req.body.role || 'USER'
+      roleName: req.body.roleName 
     });
 
     await user.save();

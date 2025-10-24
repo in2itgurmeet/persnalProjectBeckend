@@ -2,18 +2,33 @@ const Theatre = require("../models/theatre");
 
 // ✅ Create Theatre
 exports.createTheatre = async (req, res) => {
-    try {
-        const newTheatre = new Theatre(req.body);
-        const savedTheatre = await newTheatre.save();
-        res.status(201).json({
-            message: "Theatre created successfully",
-            theatre: savedTheatre,
-        });
-    } catch (error) {
-        console.error("Error creating theatre:", error);
-        res.status(500).json({ message: "Error creating theatre", error: error.message });
+  try {
+    const { theatreName, location } = req.body;
+    const existingTheatre = await Theatre.findOne({
+      theatreName: { $regex: new RegExp(`^${theatreName}$`, "i") },
+      location: { $regex: new RegExp(`^${location}$`, "i") },
+    });
+
+    if (existingTheatre) {
+      return res.status(400).json({
+        message: `A theatre named '${theatreName}' already exists in ${location}. Please choose another name.`,
+      });
     }
+    const newTheatre = new Theatre(req.body);
+    const savedTheatre = await newTheatre.save();
+
+    res.status(201).json({
+      message: "Theatre created successfully",
+      theatre: savedTheatre,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error creating theatre",
+      error: error.message,
+    });
+  }
 };
+
 
 // ✅ Get all Theatres
 exports.getAllTheatres = async (req, res) => {

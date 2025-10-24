@@ -6,7 +6,7 @@ const TOKEN_EXPIRY = '10m';
 exports.generateToken = (user) => {
   const payload = {
     username: user.username || user.email,
-    role: user.role || 'USER'
+    role: user.roleName
   };
   return jwt.sign(payload, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
 };
@@ -33,6 +33,6 @@ exports.verifyToken = (req, res, next) => {
 
 exports.requireRole = (role) => (req, res, next) => {
   if (!req.user) return res.status(401).json({ error: 'Unauthorized: User not found in token' });
-  if (req.user.role !== role) return res.status(403).json({ error: 'Forbidden: Access denied' });
+  if (req.user.roleName !== role) return res.status(403).json({ error: 'Forbidden: Access denied' });
   next();
 };

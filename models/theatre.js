@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Seat Category Schema (theatre creation ke liye)
 const categorySchema = new mongoose.Schema({
     categoryId: { type: String, required: true },
     categoryName: { type: String, required: true },
@@ -8,7 +7,7 @@ const categorySchema = new mongoose.Schema({
     seats: [
         {
             seatNumber: { type: String, required: true },
-            isAvailable: { type: Boolean, default: true } // true = available, false = booked
+            isAvailable: { type: Boolean, default: true }
         }
     ]
 });
@@ -19,14 +18,14 @@ const showSchema = new mongoose.Schema({
     movieName: { type: String, required: true },
     language: { type: String, required: true },
     format: { type: String, required: true },
-    timings: [{ type: String }], 
-    categories: [                  // Price per category for this show
+    timings: [{ type: String }],
+    categories: [
         {
             categoryId: { type: String, required: true },
             pricePerSeat: { type: Number, required: true }
         }
     ],
-    dateRange: {                 
+    dateRange: {
         startDate: { type: Date },
         endDate: { type: Date }
     }
@@ -35,8 +34,8 @@ const showSchema = new mongoose.Schema({
 const screenSchema = new mongoose.Schema({
     screenId: { type: String, required: true },
     screenName: { type: String, required: true },
-    categories: [categorySchema], 
-    shows: [showSchema]            
+    categories: [categorySchema],
+    shows: [showSchema]
 });
 
 // Theatre Schema
@@ -51,5 +50,5 @@ const theatreSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-const Theatre = mongoose.model("Theatre", theatreSchema); 
+const Theatre = mongoose.model("Theatre", theatreSchema);
 module.exports = Theatre;

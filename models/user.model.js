@@ -1,8 +1,4 @@
-// models/user.model.js
-
 const mongoose = require('mongoose');
-
-// Define the User schema
 const userSchema = new mongoose.Schema(
   {
     username: {
@@ -38,13 +34,11 @@ const userSchema = new mongoose.Schema(
     },
     roleName: {
       type: String,
-      enum: ['USER', 'ADMIN'],  // Only 'USER' or 'ADMIN' allowed
-      default: 'USER',          // Default role is USER
+      enum: ['USER', 'ADMIN'],
       required: true
     },
     profileImg: {
       type: String,
-      default: ''
     },
     dob: {
       type: Date
@@ -78,9 +72,8 @@ const userSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true // Automatically adds createdAt and updatedAt fields
+    timestamps: true 
   }
 );
 
-// Export the model
 module.exports = mongoose.model('User', userSchema);

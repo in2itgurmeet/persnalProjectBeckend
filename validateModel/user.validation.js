@@ -27,7 +27,6 @@ const registerSchema = Joi.object({
 });
 
 
-
 // Update profile validation (all fields optional)
 const updateSchema = Joi.object({
   name: Joi.string().max(50),
