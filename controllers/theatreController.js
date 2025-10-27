@@ -11,7 +11,7 @@ exports.createTheatre = async (req, res) => {
 
     if (existingTheatre) {
       return res.status(400).json({
-        message: `A theatre named '${theatreName}' already exists in ${location}. Please choose another name.`,
+        message: `A theatre named '${theatreName}' already exists in ${location}. Please choose another name or location.`,
       });
     }
     const newTheatre = new Theatre(req.body);
