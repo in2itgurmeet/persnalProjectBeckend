@@ -50,8 +50,8 @@ exports.loginUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  console.log(req.body);
   try {
-    // 🔹 Validate other fields
     const { error } = updateSchema.validate(req.body);
     if (error)
       return res
@@ -61,14 +61,12 @@ exports.updateUser = async (req, res) => {
     // 🔹 Prepare updated data
     const updateData = { ...req.body };
 
-    // 🔹 If an image file is uploaded, handle it
     if (req.file) {
       const fileBuffer = req.file.buffer.toString("base64");
 
       // ✅ Option 1: store image directly in user model
       updateData.profileImg = fileBuffer;
 
-      // ✅ Option 2: store image in uploads collection      
       const newUpload = new Upload({
         fileName: req.file.originalname,
         fileType: req.file.mimetype,

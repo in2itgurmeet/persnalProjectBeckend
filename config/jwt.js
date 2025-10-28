@@ -5,6 +5,7 @@ const TOKEN_EXPIRY = '10m';
 
 exports.generateToken = (user) => {
   const payload = {
+    sub: user._id.toString(),        // ✅ Add unique subject claim (userI
     username: user.username || user.email,
     role: user.roleName
   };
