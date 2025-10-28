@@ -51,13 +51,50 @@ exports.loginUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    // 🔹 Validate other fields
     const { error } = updateSchema.validate(req.body);
-    if (error) return res.status(400).json({ success: false, message: error.details[0].message });
+    if (error)
+      return res
+        .status(400)
+        .json({ success: false, message: error.details[0].message });
 
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    // 🔹 Prepare updated data
+    const updateData = { ...req.body };
 
-    res.status(200).json({ success: true, message: 'User updated successfully', user });
+    // 🔹 If an image file is uploaded, handle it
+    if (req.file) {
+      const fileBuffer = req.file.buffer.toString("base64");
+
+      // ✅ Option 1: store image directly in user model
+      updateData.profileImg = fileBuffer;
+
+      // ✅ Option 2: store image in uploads collection      
+      const newUpload = new Upload({
+        fileName: req.file.originalname,
+        fileType: req.file.mimetype,
+        fileData: fileBuffer,
+        modelRef: req.params.id,
+        modelType: "User",
+      });
+      await newUpload.save();
+      updateData.profileImg = newUpload._id;
+      
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, updateData, {
+      new: true,
+    });
+
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user,
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -71,5 +108,29 @@ exports.deleteUser = async (req, res) => {
     res.status(200).json({ success: true, message: 'User deleted successfully' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// Get user by ID
+exports.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };

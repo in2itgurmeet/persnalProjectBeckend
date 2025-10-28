@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser, updateUser, deleteUser } = require("../controllers/user.controller");
+const { registerUser, loginUser, updateUser, deleteUser,getUserById } = require("../controllers/user.controller");
+const upload = require("../middlewares/upload.middleware");
 
 /**
  * @swagger
@@ -31,7 +32,7 @@ const { registerUser, loginUser, updateUser, deleteUser } = require("../controll
  *             properties:
  *               name:
  *                 type: string
- *                 example: Gurmeet Singh
+ *                 example: Gurmeet kumar
  *               username:
  *                 type: string
  *                 example: gurmeet_01
@@ -95,9 +96,9 @@ router.post("/login", loginUser);
  * @swagger
  * /users/update/{id}:
  *   put:
- *     summary: Update existing user details
+ *     summary: Update existing user details (supports image upload)
  *     tags: [Users]
- *     description: Updates user information (all fields optional).
+ *     description: Updates user information. You can also upload a new profile image.
  *     parameters:
  *       - name: id
  *         in: path
@@ -109,7 +110,7 @@ router.post("/login", loginUser);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:                # ✅ changed from application/json
  *           schema:
  *             type: object
  *             properties:
@@ -132,9 +133,10 @@ router.post("/login", loginUser);
  *                 type: string
  *                 enum: [USER, ADMIN]
  *                 example: USER
- *               profileImg:
+ *               profileImg:                   # ✅ file upload field
  *                 type: string
- *                 example: https://example.com/newprofile.png
+ *                 format: binary
+ *                 description: Upload profile image file
  *               dob:
  *                 type: string
  *                 format: date
@@ -173,7 +175,7 @@ router.post("/login", loginUser);
  *       400:
  *         description: Validation failed
  */
-router.put("/update/:id", updateUser);
+router.put("/update/:id", upload.single("profileImg"), updateUser);
 
 /**
  * @swagger
@@ -197,5 +199,27 @@ router.put("/update/:id", updateUser);
  *         description: User not found
  */
 router.delete("/delete/:id", deleteUser);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get user by ID
+ *     tags: [Users]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: string
+ *           example: 671cd83fd9b3e64f28b2e23a
+ *     responses:
+ *       200:
+ *         description: User retrieved successfully
+ *       404:
+ *         description: User not found
+ */
+router.get("/:id", getUserById);
 
 module.exports = router;

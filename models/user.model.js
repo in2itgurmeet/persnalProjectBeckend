@@ -37,8 +37,10 @@ const userSchema = new mongoose.Schema(
       enum: ['USER', 'ADMIN'],
       required: true
     },
-    profileImg: {
-      type: String,
+      profileImg: {
+      type: mongoose.Schema.Types.ObjectId,  // ✅ Reference to Upload
+      ref: "Upload",
+      default: null
     },
     dob: {
       type: Date

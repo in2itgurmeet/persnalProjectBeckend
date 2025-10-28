@@ -31,29 +31,37 @@ const showSchema = new mongoose.Schema({
 });
 
 const movieSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: { type: String },
-    runTime: { type: Number },
-    eventType: { type: String },
-    imdbRating: { type: Number, default: null },
-    likes: { type: Number, default: 0 },
-    votes: { type: Number, default: 0 },
-    currentlyPlaying: { type: Boolean, default: true },
-    ageLimit: { type: Number, default: 0 },
-    releasingOn: { type: Date },
-    languages: [Number],
-    genres: [Number],
-    format: [Number],
-    tag: [Number],
-    releaseMonth: [Number],
-    dateFilter: [Date],
-    categories: [categorySchema],
-    moreFilters: [String],
-    cast: [castSchema],
-    crew: [crewSchema],
-    city: [Number],
-    show: [showSchema],
-    addedBy: { type: String, required: true }
+  name: { type: String, required: true },
+  description: { type: String },
+  runTime: { type: Number },
+  eventType: { type: String },
+  imdbRating: { type: Number, default: null },
+  likes: { type: Number, default: 0 },
+  votes: { type: Number, default: 0 },
+  currentlyPlaying: { type: Boolean, default: true },
+  ageLimit: { type: Number, default: 0 },
+  releasingOn: { type: Date },
+  languages: [Number],
+  genres: [Number],
+  format: [Number],
+  tag: [Number],
+  releaseMonth: [Number],
+  dateFilter: [Date],
+  categories: [{ layout: Number, moviePrice: Number }],
+  cast: [{ actorName: String, description: String, castImg: String }],
+  crew: [{ memberName: String, description: String, crewImg: String }],
+  city: [Number],
+  show: [
+    {
+      venue: Number,
+      screen: Number,
+      category: [{ layout: Number, moviePrice: Number }],
+      showtimesdate: [{ showDate: Date, showTime: [String] }],
+    },
+  ],
+  posterRef: { type: mongoose.Schema.Types.ObjectId, ref: "Upload" }, // ✅ new
+  addedBy: { type: String, required: true },
 }, { timestamps: true });
+
 
 module.exports = mongoose.model('Movie', movieSchema);

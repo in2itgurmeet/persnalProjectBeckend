@@ -2,16 +2,24 @@ const Movie = require('../models/movie');
 
 exports.createMovie = async (req, res) => {
   try {
-    const movieData = { ...req.body, addedBy: req.user.username };
-    console.log('Movie Data:', req.user); // Debugging line
+    const { posterRef, ...movieData } = req.body;
+    const newMovie = new Movie({
+      ...movieData,
+      addedBy: req.user.username,
+      posterRef: posterRef || null, // ✅ optional link
+    });
 
-    const movie = new Movie(movieData);
-    await movie.save();
+    await newMovie.save();
+
+    // Optional: Update Upload doc to link back
+    if (posterRef) {
+      await Upload.findByIdAndUpdate(posterRef, { modelRef: newMovie._id, modelType: "Movie" });
+    }
 
     res.status(201).json({
       success: true,
-      message: 'Movie created successfully',
-      movie
+      message: "Movie created successfully",
+      movie: newMovie,
     });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
