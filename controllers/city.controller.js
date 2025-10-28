@@ -2,7 +2,7 @@ const City = require('../models/city.model');
 const PopularCity = require("../models/popularcity.model")
 const State = require("../models/state.model");
 
-// Get all cities
+
 exports.getAllCities = async (req, res) => {
     try {
         const cities = await City.find();
@@ -17,7 +17,7 @@ exports.getAllCities = async (req, res) => {
     }
 };
 
-// Create a new city
+
 exports.createCity = async (req, res) => {
     try {
         const { cityName, popularCity } = req.body;
@@ -37,7 +37,7 @@ exports.createCity = async (req, res) => {
 };
 
 
-// Delete city
+
 exports.deleteCity = async (req, res) => {
     try {
         const city = await City.findByIdAndDelete(req.params.id);
@@ -72,7 +72,7 @@ exports.getAllPopularCities = async (req, res) => {
     }
 };
 
-// Create a popular city
+
 exports.createPopularCity = async (req, res) => {
     try {
         const { cityName, imageUrl } = req.body;
@@ -91,7 +91,7 @@ exports.createPopularCity = async (req, res) => {
     }
 };
 
-// Delete a popular city
+
 exports.deletePopularCity = async (req, res) => {
     try {
         const city = await PopularCity.findByIdAndDelete(req.params.id);
@@ -112,7 +112,7 @@ exports.deletePopularCity = async (req, res) => {
     }
 };
 
-// Get all states
+
 exports.getAllStates = async (req, res) => {
     try {
         const states = await State.find();
